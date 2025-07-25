@@ -92,7 +92,9 @@ python src/scoring_model.py --normalize zscore --debug
 * Scope: All mint/supply, borrow, repayBorrow, redeem/withdraw, liquidateBorrow events
 
 ### 2. Feature Selection
-__Feature__        	  __Rationale__ 
+
+__Feature__        	  __Rationale__
+_______________________________________________________________________________
 net_borrowed	        Unpaid loan principal ⇒ high values → higher risk
 borrow_count	        Frequency of borrow actions → potential over-leverage
 liquidation_count    	Direct indicator of past defaults
@@ -101,23 +103,21 @@ total_tx_count	      Overall activity; more active → better risk management
 unique_functions	    Protocol usage diversity → risk diversification
 
 3. Normalization & Scoring
-Normalization: Min‑Max or Z‑Score to place features on comparable scales
+* Normalization: Min‑Max or Z‑Score to place features on comparable scales
 
-Weighted sum:
-
-text
-Copy
-Edit
+* Weighted sum:
+```
 score_raw = 0.4·net_borrowed_norm
           + 0.1·borrow_count_norm
           + 0.2·liquidation_count_norm
           + 0.3·avg_time_between_tx_norm
 score = clip(int(score_raw × 1000), 0, 1000)
-Interpretation:
+```
+* Interpretation:
 
-0 – 300 = Low risk
+** 0 – 300 = Low risk
 
-301 – 700 = Medium risk
+** 301 – 700 = Medium risk
 
-701 – 1000 = High risk
+** 701 – 1000 = High risk
 
