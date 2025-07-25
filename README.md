@@ -32,3 +32,18 @@ wallet-risk-scoring/
 ├── requirements.txt
 └── README.md 
 ```
+
+
+---
+
+## ⚙️ Prerequisites
+
+- Python 3.8 or higher  
+- Install dependencies:
+```bash
+  pip install -r requirements.txt
+```
+- Obtain an API key for your chosen data source (Etherscan) and set as an environment variable:
+```
+export ETHERSCAN_API_KEY=your_api_key_here
+```
