@@ -49,7 +49,7 @@ export ETHERSCAN_API_KEY=your_api_key_here
 ```
 
 ## 🚀 Workflow & Usage
-#### 1. Fetch raw transactions
+### 1. Fetch raw transactions
 ```
 python src/fetch_compound.py \
   --input data/wallet_list.csv \
@@ -57,19 +57,19 @@ python src/fetch_compound.py \
 ```
 Retrieves all Compound V2/V3 events (supply, borrow, repay, withdraw, liquidate) for each wallet.
 
-#### 2. Filter & flatten
+### 2. Filter & flatten
 ```
 python src/filter_compound_transaction.py
 ```
-Reads raw JSON, extracts only relevant function calls, and writes a flat CSV at data/filtered_compound_transactions.csv.
+Reads raw JSON, extracts only relevant function calls, and writes a flat CSV at ```data/filtered_compound_transactions.csv```.
 
-#### 3. Feature engineering
+### 3. Feature engineering
 ```
 python src/feature_engineering.py
 ```
 Aggregates per‑wallet metrics (total borrowed, repay count, liquidation count, activity span, etc.) into data/wallet_features.csv.
 
-#### 4. Compute risk scores
+### 4. Compute risk scores
 ```
 python src/scoring_model.py --normalize zscore --debug
 ```
@@ -79,8 +79,45 @@ python src/scoring_model.py --normalize zscore --debug
 
 * Outputs ```output/wallet_scores.csv```.
 
-#### 5. Analyze & visualize
+### 5. Analyze & visualize
 
 * Open notebooks/analysis.ipynb in Jupyter or VS Code.
 
 * Inspect histograms, top‑10 bar charts, and write your interpretations.
+
+## 📑 Methodology
+### 1. Data Collection
+* Source: Etherscan API
+
+* Scope: All mint/supply, borrow, repayBorrow, redeem/withdraw, liquidateBorrow events
+
+### 2. Feature Selection
+__Feature__        	  __Rationale__ 
+net_borrowed	        Unpaid loan principal ⇒ high values → higher risk
+borrow_count	        Frequency of borrow actions → potential over-leverage
+liquidation_count    	Direct indicator of past defaults
+avg_time_between_tx  	Wallet engagement; long gaps → unmanaged positions
+total_tx_count	      Overall activity; more active → better risk management
+unique_functions	    Protocol usage diversity → risk diversification
+
+3. Normalization & Scoring
+Normalization: Min‑Max or Z‑Score to place features on comparable scales
+
+Weighted sum:
+
+text
+Copy
+Edit
+score_raw = 0.4·net_borrowed_norm
+          + 0.1·borrow_count_norm
+          + 0.2·liquidation_count_norm
+          + 0.3·avg_time_between_tx_norm
+score = clip(int(score_raw × 1000), 0, 1000)
+Interpretation:
+
+0 – 300 = Low risk
+
+301 – 700 = Medium risk
+
+701 – 1000 = High risk
+
