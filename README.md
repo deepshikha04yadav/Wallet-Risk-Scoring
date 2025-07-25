@@ -67,7 +67,7 @@ Reads raw JSON, extracts only relevant function calls, and writes a flat CSV at 
 ```
 python src/feature_engineering.py
 ```
-Aggregates per‑wallet metrics (total borrowed, repay count, liquidation count, activity span, etc.) into data/wallet_features.csv.
+Aggregates per‑wallet metrics (total borrowed, repay count, liquidation count, activity span, etc.) into ```data/wallet_features.csv```.
 
 ### 4. Compute risk scores
 ```
