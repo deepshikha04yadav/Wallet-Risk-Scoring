@@ -3,7 +3,7 @@ import pandas as pd
 from tqdm import tqdm
 import time
 
-ETHERSCAN_API_KEY = 'Q47WWYYFC89PFKG5B6ZCTR6UCKCMWEIW54'  # Replace this with your Etherscan API key
+ETHERSCAN_API_KEY = 'YOUR_API_KEY'  # Replace this with your Etherscan API key
 ETHERSCAN_URL = 'https://api.etherscan.io/api'
 
 # Load wallet list
