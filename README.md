@@ -93,16 +93,16 @@ python src/scoring_model.py --normalize zscore --debug
 
 ### 2. Feature Selection
 
-__Feature__        	  __Rationale__
-_______________________________________________________________________________
-net_borrowed	        Unpaid loan principal ⇒ high values → higher risk
-borrow_count	        Frequency of borrow actions → potential over-leverage
-liquidation_count    	Direct indicator of past defaults
-avg_time_between_tx  	Wallet engagement; long gaps → unmanaged positions
-total_tx_count	      Overall activity; more active → better risk management
-unique_functions	    Protocol usage diversity → risk diversification
+| __Feature__        	|  __Rationale__                                         |
+| --------------------|--------------------------------------------------------|
+| net_borrowed	      |  Unpaid loan principal ⇒ high values → higher risk    |
+| borrow_count	      |  Frequency of borrow actions → potential over-leverage |
+| liquidation_count   | 	Direct indicator of past defaults                    |
+| avg_time_between_tx | 	Wallet engagement; long gaps → unmanaged positions   |
+| total_tx_count	    |  Overall activity; more active → better risk management|
+| unique_functions	  |  Protocol usage diversity → risk diversification       |
 
-3. Normalization & Scoring
+### 3. Normalization & Scoring
 * Normalization: Min‑Max or Z‑Score to place features on comparable scales
 
 * Weighted sum:
@@ -114,10 +114,40 @@ score_raw = 0.4·net_borrowed_norm
 score = clip(int(score_raw × 1000), 0, 1000)
 ```
 * Interpretation:
+  *  0 – 300 = Low risk
+  *  301 – 700 = Medium risk
+  *  701 – 1000 = High risk
 
-** 0 – 300 = Low risk
+## 📄 Deliverables
+### 1. ```output/wallet_scores.csv```
 
-** 301 – 700 = Medium risk
+| wallet_id                                   |	score |
+| --------------------------------------------|-------|
+| 0x0039f22efb07a647557c7c5d17854cfd6d489ef3	| 37    |
+|  ...	                                      | ...   |
 
-** 701 – 1000 = High risk
+### 2. Brief Write‑Up
+
+* __Data Collection:__ APIs used, query parameters, pagination
+
+* __Feature Rationale:__ Why each metric correlates with risk
+
+* __Scoring Logic:__ Normalization choice, weight justification
+
+* __Scalability:__ Pipeline modularity, configuration flags, extensibility for other protocols
+
+## 🔮 Future Work
+
+* __Weight Optimization:__ Use backtesting on historical liquidation data or supervised learning with labeled defaults to fine-tune feature weights.
+
+* __Enhanced Features:__ Incorporate collateral asset diversity, on-chain health factor trends, and external oracle price feeds.
+
+* __Protocol Extension:__ Adapt the pipeline to other DeFi lending platforms (e.g., Aave, MakerDAO) with minimal changes.
+
+* __Real-Time Scoring:__ Deploy as a real-time microservice with live event streaming, alerting on high-risk wallets.
+
+## ✍️ Author Note
+
+This risk-scoring pipeline is designed for clarity and modularity. Each step—from data ingestion to scoring—can be configured or swapped for alternative data sources and algorithms. Feel free to extend the codebase with additional indicators or integrate with dashboarding tools for richer insights.
+
 
