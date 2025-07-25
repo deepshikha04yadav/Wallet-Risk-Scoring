@@ -49,7 +49,7 @@ export ETHERSCAN_API_KEY=your_api_key_here
 ```
 
 ## 🚀 Workflow & Usage
-** 1. Fetch raw transactions **
+#### 1. Fetch raw transactions
 ```
 python src/fetch_compound.py \
   --input data/wallet_list.csv \
