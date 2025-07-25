@@ -57,19 +57,19 @@ python src/fetch_compound.py \
 ```
 Retrieves all Compound V2/V3 events (supply, borrow, repay, withdraw, liquidate) for each wallet.
 
-2. Filter & flatten
+#### 2. Filter & flatten
 ```
 python src/filter_compound_transaction.py
 ```
 Reads raw JSON, extracts only relevant function calls, and writes a flat CSV at data/filtered_compound_transactions.csv.
 
-3. Feature engineering
+#### 3. Feature engineering
 ```
 python src/feature_engineering.py
 ```
 Aggregates per‑wallet metrics (total borrowed, repay count, liquidation count, activity span, etc.) into data/wallet_features.csv.
 
-4. Compute risk scores
+#### 4. Compute risk scores
 ```
 python src/scoring_model.py --normalize zscore --debug
 ```
@@ -77,9 +77,9 @@ python src/scoring_model.py --normalize zscore --debug
 
 * Applies weighted formula → integer score [0, 1000]
 
-* Outputs output/wallet_scores.csv.
+* Outputs ```output/wallet_scores.csv```.
 
-5. Analyze & visualize
+#### 5. Analyze & visualize
 
 * Open notebooks/analysis.ipynb in Jupyter or VS Code.
 
